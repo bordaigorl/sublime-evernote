@@ -383,7 +383,10 @@ class OpenEvernoteNoteCommand(EvernoteDoWindow):
                     newview.settings().set("$evernote_guid", note.guid)
                     newview.settings().set("$evernote_title", note.title)
                     append_to_view(newview, meta+mdtxt)
-                    syntax = newview.settings().get("md_syntax", "Packages/MarkdownEditing/Markdown.tmLanguage")
+                    languageFileLocation = sublime.sublime_api.find_resources("Markdown.tmLanguage")
+                    if not languageFileLocation:
+                        languageFileLocation = ["Packages/Markdown/Markdown.tmLanguage"]
+                    syntax = newview.settings().get("md_syntax", languageFileLocation[0])
                 else:
                     syntax = "Packages/XML/XML.tmLanguage"
                     append_to_view(newview, note.content)
