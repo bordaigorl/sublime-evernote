@@ -20,6 +20,11 @@
                                 "args": {"file": "${packages}/Evernote/README.md"},
                                 "caption": "README"
                             },
+                            {
+                                "command": "open_url",
+                                "args": {"url": "https://github.com/bordaigorl/sublime-evernote/wiki"},
+                                "caption": "Wiki"
+                            },
                             { "caption": "-" },
                             {
                                 "command": "open_file",

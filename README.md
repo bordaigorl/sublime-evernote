@@ -78,6 +78,14 @@ This will open a panel from which you can select a notebook and a note in it.
 The selected note will be converted in markdown format and opened in a view.
 This command only handles the main contents of the note and ignores the attachments.
 
+### Search Note
+
+`Command Palette` > `Evernote: Search Note`
+
+You will be presented with a prompt where you can write a query in the Evernote query language [documented here](http://dev.evernote.com/doc/articles/search_grammar.php).
+A panel will show the search results from which you can select a note.
+The selected note will be converted in markdown format and opened in a view.
+
 ### Update Note
 
 `Command Palette` > `Evernote: Update Evernote Note`
