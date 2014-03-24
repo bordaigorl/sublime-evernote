@@ -2,8 +2,8 @@
 	<content><![CDATA[
 ---
 title: $1
-tags: $2
-notebook: $3
+notebook: $2
+tags: $3
 ---
 
 ]]></content>

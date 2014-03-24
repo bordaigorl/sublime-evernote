@@ -1,0 +1,4 @@
+[
+    {"command": "insert", "args": {"characters": ", "}},
+    {"command": "auto_complete"}
+]

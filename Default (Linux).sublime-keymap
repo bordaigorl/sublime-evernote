@@ -1,0 +1,29 @@
+[
+    { "keys": [","], "command": "run_macro_file", "args":{"file": "Packages/Evernote/EvernoteAutoTags.sublime-macro"}, "context":
+     [
+         { "key": "selection_empty", "operator": "equal", "operand": true, "match_all": true },
+         { "key": "preceding_text", "operator": "regex_match", "operand": "^\\s*tags\\s*:.*$", "match_all": true },
+         { "key": "eol_selector", "operator": "not_equal", "operand": "string.quoted", "match_all": true },
+         { "key": "selector", "operator": "equal", "operand": "meta.metadata.evernote - meta.structure.array", "match_all": true },
+         { "key": "selector", "operator": "not_equal", "operand": "markup.raw", "match_all": true }
+     ]
+    },
+    { "keys": [" "], "command": "auto_complete", "context":
+     [
+         { "key": "selection_empty", "operator": "equal", "operand": true, "match_all": true },
+         { "key": "preceding_text", "operator": "regex_match", "operand": "^\\s*tags\\s*:\\s*$", "match_all": true },
+         { "key": "eol_selector", "operator": "not_equal", "operand": "string.quoted", "match_all": true },
+         { "key": "selector", "operator": "equal", "operand": "meta.metadata.evernote - meta.structure.array", "match_all": true },
+         { "key": "selector", "operator": "not_equal", "operand": "markup.raw", "match_all": true }
+     ]
+    },
+    { "keys": [","], "command": "run_macro_file", "args":{"file": "Packages/Evernote/EvernoteAutoTagsQuoted.sublime-macro"}, "context":
+     [
+         { "key": "selection_empty", "operator": "equal", "operand": true, "match_all": true },
+         { "key": "preceding_text", "operator": "regex_match", "operand": "^\\s*tags\\s*:.*$", "match_all": true },
+         { "key": "eol_selector", "operator": "not_equal", "operand": "string.quoted", "match_all": true },
+         { "key": "selector", "operator": "equal", "operand": "meta.metadata.evernote meta.structure.array", "match_all": true },
+         { "key": "selector", "operator": "not_equal", "operand": "markup.raw", "match_all": true }
+     ]
+    },
+]
