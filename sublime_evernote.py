@@ -80,6 +80,13 @@ def append_to_view(view, text):
     return view
 
 
+def insert_to_view(view, text):
+    view.run_command('insert', {
+        'characters': text,
+    })
+    return view
+
+
 def find_syntax(lang, default=None):
     res = sublime.find_resources("%s.*Language" % lang)
     if res:
@@ -212,6 +219,16 @@ class EvernoteDo():
     def token(self):
         return self.settings.get("token")
 
+    def get_shard_id(self):
+        token_parts = self.token().split(":")
+        id = token_parts[0][2:]
+        return id
+
+    def get_user_id(self):
+        token_parts = self.token().split(":")
+        id = token_parts[1][2:]
+        return int(id, 16)
+
     def load_settings(self):
         self.settings = sublime.load_settings(EVERNOTE_SETTINGS)
         pygm_style = self.settings.get('code_highlighting_style')
@@ -253,8 +270,7 @@ class EvernoteDo():
             callback(**kwargs)
 
         def __derive_note_store_url(token):
-            token_parts = token.split(":")
-            id = token_parts[0][2:]
+            id = self.get_shard_id()
             url = "http://www.evernote.com/shard/" + id + "/notestore"
             return url
 
@@ -408,6 +424,8 @@ class EvernoteDoWindow(EvernoteDo, sublime_plugin.WindowCommand):
             from imp import reload
             reload(markdown2)
             reload(html2text)
+
+        self.view = self.window.active_view()
 
         self.load_settings()
 
@@ -710,7 +728,7 @@ class AttachToEvernoteNote(OpenEvernoteNoteCommand):
     def open_note(self, guid, insert_in_content=True, filename=None, prompt=False, **unk_args):
         import hashlib, mimetypes
         if filename is None:
-            view = self.window.active_view()
+            view = self.view
             if view is None:
                 sublime.error_message("Evernote plugin could not open the file you specified!")
                 return
@@ -765,6 +783,24 @@ class AttachToEvernoteNote(OpenEvernoteNoteCommand):
 
     def is_enabled(self, insert_in_content=True, filename=None, **unk):
         return filename is not None or self.window.active_view() is not None
+
+
+class InsertLinkToEvernoteNote(OpenEvernoteNoteCommand):
+
+    def open_note(self, guid, **unk_args):
+        noteStore = self.get_note_store()
+        note = noteStore.getNote(self.token(), guid, False, False, False, False)
+        title = note.title
+        link = self.get_note_link(guid)
+        mdlink = '[{}]({})'.format(title, link)
+        insert_to_view(self.view, mdlink)
+
+    def get_note_link(self, guid):
+        linkformat = 'evernote:///view/{userid}/{shardid}/{noteguid}/{noteguid}/'
+        return linkformat.format(userid=self.get_user_id(), shardid=self.get_shard_id(), noteguid=guid)
+
+    def is_enabled(self):
+        return self.window.active_view().settings().get('$evernote', False)
 
 
 class EvernoteInsertAttachment(EvernoteDoText):
@@ -924,6 +960,7 @@ class NewEvernoteNoteCommand(EvernoteDo, sublime_plugin.WindowCommand):
         self.load_settings()
         view = self.window.new_file()
         view.set_syntax_file(self.md_syntax)
+        view.settings().set("$evernote", True)
         view.set_status("Evernote-info", "Send to evernote to save your edits")
         view.set_scratch(True)
         view.run_command("insert_snippet", {"contents": META_SNIPPET})
