@@ -594,6 +594,7 @@ class SaveEvernoteNoteCommand(EvernoteDoText):
                 self.view.settings().set("$evernote", True)
                 self.view.settings().set("$evernote_guid", cnote.guid)
                 self.view.settings().set("$evernote_title", cnote.title)
+                self.view.settings().set("$evernote_modified", False)
                 self.message("Successfully updated note: guid:%s" % cnote.guid)
                 self.update_status_info(cnote)
             except Exception as e:
@@ -1101,6 +1102,25 @@ class EvernoteListener(EvernoteDo, sublime_plugin.EventListener):
     def on_post_save(self, view):
         if self.settings.get('update_on_save'):
             view.run_command("save_evernote_note")
+
+    def on_modified(self, view):
+        if view.settings().get("$evernote"):
+            view.settings().set("$evernote_modified", True)
+
+    def on_pre_close(self, view):
+        if view.settings().get("$evernote") and view.settings().get("$evernote_modified"):
+            # There is no API to cancel the closing of a view
+            # so we let Sublime close it but clone it first and then ask the user.
+            choices = ["Close and discard changes", "Save to Evernote and close"]
+            view.window().run_command("clone_file")
+            cloned = view.window().active_view()
+            def on_choice(i):
+                if i == 1:
+                    cloned.run_command("save_evernote_note")
+                if i >= 0:
+                    cloned.settings().set("$evernote_modified", False)
+                    cloned.close()
+            cloned.window().show_quick_panel(choices, on_choice)
 
     def on_query_context(self, view, key, operator, operand, match_all):
         if key == "evernote_note":
