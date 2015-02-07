@@ -1,6 +1,8 @@
 Evernote for Sublime Text
 =========================
 
+[![Join the chat at https://gitter.im/bordaigorl/sublime-evernote](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/bordaigorl/sublime-evernote?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [Sublime Text](http://www.sublimetext.com/3) plugin for [Evernote](http://www.evernote.com).
 
 This package is based on [SublimeEvernote](https://github.com/jamiesun/SublimeEvernote) for ST2 but is only supported on ST3 and adds many new features.
