@@ -1,6 +1,7 @@
 {
     // inline_css is documented at https://github.com/bordaigorl/sublime-evernote/wiki/Styling
     "inline_css": {
+        "body_wrapper": "line-height: 1.5; color: #2c3f51; font-family: Helvetica Neue, Arial, Hiragino Sans GB, STHeiti, Microsoft YaHei, WenQuanYi Micro Hei, SimSun, Song, sans-serif;",
         "pre": "color: #000000; font-family: monospace,monospace; font-size: 0.9em; white-space: pre-wrap; word-wrap: break-word; border: 1px solid #cccccc; border-radius: 3px; overflow: auto; padding: 6px 10px; margin-bottom: 10px;",
         "code": "color: black; font-family: monospace,monospace; font-size: 0.9em;",
         "inline-code": "color: #000000; font-family: monospace,monospace; padding: 0.1em 0.2em; margin: 0.1em; font-size: 85%; background-color: #F5F5F5; border-radius: 3px; border: 1px solid #cccccc;",
