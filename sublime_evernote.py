@@ -564,6 +564,19 @@ class SendToEvernoteCommand(EvernoteDoText):
         else:
             contents = view.substr(sublime.Region(0, view.size()))
 
+        if self.settings.get('backup_source_file'):
+            import hashlib
+            encoded_contents = contents.encode('utf8')
+            h = hashlib.md5(encoded_contents)
+            attachment = Types.Resource(
+                # noteGuid=guid,
+                mime="text/plain",
+                data=Types.Data(body=encoded_contents, size=len(encoded_contents), bodyHash=h.digest()),
+                attributes=Types.ResourceAttributes(
+                    fileName="sublime-evernote.0.txt",
+                    attachment=True))
+            note.resources = [attachment]
+
         notebooks = self.get_notebooks()
         self.populate_note(note, contents)
 
@@ -652,7 +665,36 @@ class SaveEvernoteNoteCommand(EvernoteDoText):
 
         def __update_note():
             try:
-                cnote = noteStore.updateNote(self.token(), note)
+                if self.settings.get('backup_source_file'):
+                    cnote = noteStore.getNote(self.token(), note.guid, True, False, False, False)
+                    cnote.title = note.title
+                    cnote.tagNames = note.tagNames
+                    cnote.notebookGuid = note.notebookGuid
+                    cnote.content = note.content
+                    import hashlib
+                    encoded_contents = self.view.substr(sublime.Region(0, self.view.size())).encode('utf8')
+                    bodyhash = hashlib.md5(encoded_contents).digest()
+                    max_seq_num = -1
+                    prev_hash = None
+                    for res in cnote.resources:
+                        matched = re.match("sublime-evernote\.(\d+)\.txt", res.attributes.fileName)
+                        if matched:
+                            seq_num = int(matched.groups()[0])
+                            if max_seq_num < seq_num:
+                                max_seq_num = seq_num
+                                prev_hash = res.data.bodyHash
+                    if bodyhash != prev_hash:
+                        attachment = Types.Resource(
+                            # noteGuid=guid,
+                            mime="text/plain",
+                            data=Types.Data(body=encoded_contents, size=len(encoded_contents), bodyHash=bodyhash),
+                            attributes=Types.ResourceAttributes(
+                                fileName="sublime-evernote.{}.txt".format(max_seq_num+1),
+                                attachment=True))
+                        cnote.resources.append(attachment)
+                    cnote = noteStore.updateNote(self.token(), cnote)
+                else:
+                    cnote = noteStore.updateNote(self.token(), note)
                 self.view.settings().set("$evernote", True)
                 self.view.settings().set("$evernote_guid", cnote.guid)
                 self.view.settings().set("$evernote_title", cnote.title)
@@ -662,7 +704,6 @@ class SaveEvernoteNoteCommand(EvernoteDoText):
             except Exception as e:
                 if sublime.ok_cancel_dialog('Evernote complained:\n\n%s\n\nRetry?' % explain_error(e)):
                     self.connect(self.__update_note)
-
         async_do(__update_note, "Updating note")
 
     def is_enabled(self, **kw):

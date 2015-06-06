@@ -30,5 +30,6 @@
     "sort_notebooks": false,
     "show_stacks": true,
     "open_single_result": true,
-    "warn_on_close": true
+    "warn_on_close": true,
+    "backup_source_file": false
 }

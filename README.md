@@ -252,6 +252,7 @@ Setting                   | Purpose
 `gfm_tables`              | enable GFM table syntax (default `true`)
 `wiki_tables`             | enable Wiki table syntax (default `false`)
 `debug`                   | enables logging in the console
+`backup_source_file`        | enables source text backup
 
 
 # Acknowledgements
