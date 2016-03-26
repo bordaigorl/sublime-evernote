@@ -912,6 +912,13 @@ class OpenEvernoteNoteCommand(EvernoteDoWindow):
             sublime.error_message(explain_error(e))
 
 
+class OpenEvernoteNoteByGuid(EvernoteDoWindow):
+
+    def do_run(self, **kwargs):
+        guid = sublime.get_clipboard()
+        self.view.window().run_command('open_evernote_note', {'note_guid': guid})
+
+
 class AttachToEvernoteNote(OpenEvernoteNoteCommand):
 
     def open_note(self, guid, insert_in_content=True, filename=None, prompt=False, **unk_args):
