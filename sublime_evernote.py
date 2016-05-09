@@ -1111,17 +1111,17 @@ class EvernoteInsertAttachment(EvernoteDoText):
             attr = {}
             mimet = None
             try:
-                if urllib.parse.urlparse(filename).scheme != "":
+                if os.path.isfile(filename):
+                    datafile = os.path.expanduser(filename)
+                    with open(datafile, 'rb') as content_file:
+                        filecontents = content_file.read()
+                    attr = {"fileName": os.path.basename(datafile)}
+                else:
                     # download
                     response = urllib.request.urlopen(filename)
                     filecontents = response.read()
                     attr = {"sourceURL": filename}
                     mimet = response.info().get_content_type()
-                else:
-                    datafile = os.path.expanduser(filename)
-                    with open(datafile, 'rb') as content_file:
-                        filecontents = content_file.read()
-                    attr = {"fileName": os.path.basename(datafile)}
             except Exception as e:
                 sublime.error_message(
                     "Evernote plugin has troubles locating the specified file/URL.\n" +
