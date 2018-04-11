@@ -27,8 +27,8 @@ from evernote.edam.error.ttypes import EDAMErrorCode, EDAMUserException, EDAMSys
 
 # import evernote.edam.userstore.UserStore as UserStore
 import evernote.edam.notestore.NoteStore as NoteStore
-import thrift.protocol.TBinaryProtocol as TBinaryProtocol
-import thrift.transport.THttpClient as THttpClient
+from evernote.api.client import EvernoteClient
+
 from socket import gaierror
 
 import sublime
@@ -359,14 +359,12 @@ class EvernoteDo():
             view.set_name(self.settings.get("tab_prefix", "") + note.title)
 
     def connect(self, callback, **kwargs):
+
+        LOG('initializing..., please wait...')
         self.message("initializing..., please wait...")
 
-        def __connect(token, noteStoreUrl):
-            if noteStoreUrl.startswith("https://") and not ssl:
-                LOG("Not using SSL")
-                noteStoreUrl = "http://" + noteStoreUrl[8:]
+        def __connect(token):
             self.settings.set("token", token)
-            self.settings.set("noteStoreUrl", noteStoreUrl)
             sublime.save_settings(EVERNOTE_SETTINGS)
             callback(**kwargs)
 
@@ -380,35 +378,19 @@ class EvernoteDo():
             return url
 
         def on_token(token):
-            noteStoreUrl = self.settings.get("noteStoreUrl")
-            if not noteStoreUrl:
-                noteStoreUrl = __derive_note_store_url(token)
-                p = self.window.show_input_panel(
-                    "NoteStore URL (required):", noteStoreUrl,
-                    lambda x: __connect(token, x),
-                    None, None)
-                p.sel().add(sublime.Region(0, p.size()))
-            else:
-                __connect(token, noteStoreUrl)
+            __connect(token)
 
         token = self.token()
-        noteStoreUrl = self.settings.get("noteStoreUrl")
-        if not token or not noteStoreUrl:
-            webbrowser.open_new_tab("https://www.evernote.com/api/DeveloperToken.action")
-            self.window.show_input_panel(
-                "Developer Token (required):", token or "",
-                on_token, None, None)
 
     def get_note_store(self):
-        if EvernoteDo._noteStore:
-            return EvernoteDo._noteStore
-        noteStoreUrl = self.settings.get("noteStoreUrl")
-        noteStoreHttpClient = THttpClient.THttpClient(noteStoreUrl)
-        noteStoreHttpClient.setCustomHeaders(USER_AGENT)
-        noteStoreProtocol = TBinaryProtocol.TBinaryProtocol(noteStoreHttpClient)
-        noteStore = NoteStore.Client(noteStoreProtocol)
-        EvernoteDo._noteStore = noteStore
-        return noteStore
+      if DEBUG:
+        print("token %s" % (self.token()))
+      if EvernoteDo._noteStore:
+          return EvernoteDo._noteStore
+
+      client = EvernoteClient(token=self.token(), sandbox=self.settings.get('sandbox'), china=False)
+      EvernoteDo._noteStore = client.get_note_store()
+      return EvernoteDo._noteStore
 
     def get_notebooks(self):
         if EvernoteDo._notebooks_cache:
@@ -487,8 +469,12 @@ class EvernoteDo():
     def populate_note(self, note, contents):
         if isinstance(contents, sublime.View):
             contents = contents.substr(sublime.Region(0, contents.size()))
+
+        LOG('样式？', EvernoteDo.MD_EXTRAS)
+
         body = markdown2.markdown(contents, extras=EvernoteDo.MD_EXTRAS)
 
+        LOG('内容', body)
         wrapper_style = ''
         if 'inline-css' in EvernoteDo.MD_EXTRAS:
             if 'body' in EvernoteDo.MD_EXTRAS['inline-css']:
@@ -504,7 +490,7 @@ class EvernoteDo():
                      SUBLIME_EVERNOTE_COMMENT_END))
         content += hidden
         content += body
-        LOG(body)
+
         content += '</en-note>'
         note.title = meta.get("title", note.title)
         tags = meta.get("tags", note.tagNames)

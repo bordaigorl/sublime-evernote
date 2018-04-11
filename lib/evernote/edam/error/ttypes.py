@@ -245,7 +245,6 @@ class EDAMSystemException(TException):
    - message
    - rateLimitDuration
   """
-
   thrift_spec = (
     None, # 0
     (1, TType.I32, 'errorCode', None, None, ), # 1
@@ -254,9 +253,11 @@ class EDAMSystemException(TException):
   )
 
   def __init__(self, errorCode=None, message=None, rateLimitDuration=None,):
+    TException.__init__(self, message)
     self.errorCode = errorCode
     self.message = message
     self.rateLimitDuration = rateLimitDuration
+
 
   def read(self, iprot):
     if iprot.__class__ == TBinaryProtocol.TBinaryProtocolAccelerated and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastbinary is not None:
@@ -321,11 +322,13 @@ class EDAMSystemException(TException):
       for key, value in self.__dict__.items()]
     return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
 
+  def __hash__(self):
+    return hash((self.__class__, tuple(self.__dict__.items())))
   def __eq__(self, other):
     return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
-
   def __ne__(self, other):
     return not (self == other)
+
 
 class EDAMNotFoundException(TException):
   """
@@ -353,6 +356,7 @@ class EDAMNotFoundException(TException):
   )
 
   def __init__(self, identifier=None, key=None,):
+    TException.__init__(self)
     self.identifier = identifier
     self.key = key
 
@@ -407,6 +411,9 @@ class EDAMNotFoundException(TException):
     L = ['%s=%r' % (key, value)
       for key, value in self.__dict__.items()]
     return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
+
+  def __hash__(self):
+    return hash((self.__class__, tuple(self.__dict__.items())))
 
   def __eq__(self, other):
     return isinstance(other, self.__class__) and self.__dict__ == other.__dict__

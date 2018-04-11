@@ -403,6 +403,9 @@ class Data(object):
   def __eq__(self, other):
     return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
 
+  def __hash__(self):
+    return hash((self.__class__, tuple(self.__dict__.items())))
+
   def __ne__(self, other):
     return not (self == other)
 
@@ -1020,6 +1023,9 @@ class UserAttributes(object):
   def __eq__(self, other):
     return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
 
+  def __hash__(self):
+    return hash((self.__class__, tuple(self.__dict__.items())))
+
   def __ne__(self, other):
     return not (self == other)
 
@@ -1432,6 +1438,9 @@ class Accounting(object):
   def __eq__(self, other):
     return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
 
+  def __hash__(self):
+    return hash((self.__class__, tuple(self.__dict__.items())))
+
   def __ne__(self, other):
     return not (self == other)
 
@@ -1548,6 +1557,9 @@ class BusinessUserInfo(object):
 
   def __eq__(self, other):
     return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
+
+  def __hash__(self):
+    return hash((self.__class__, tuple(self.__dict__.items())))
 
   def __ne__(self, other):
     return not (self == other)
@@ -1792,6 +1804,9 @@ class PremiumInfo(object):
 
   def __eq__(self, other):
     return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
+
+  def __hash__(self):
+    return hash((self.__class__, tuple(self.__dict__.items())))
 
   def __ne__(self, other):
     return not (self == other)
@@ -2130,6 +2145,9 @@ class User(object):
   def __eq__(self, other):
     return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
 
+  def __hash__(self):
+    return hash((self.__class__, tuple(self.__dict__.items())))
+
   def __ne__(self, other):
     return not (self == other)
 
@@ -2271,6 +2289,9 @@ class Tag(object):
   def __eq__(self, other):
     return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
 
+  def __hash__(self):
+    return hash((self.__class__, tuple(self.__dict__.items())))
+
   def __ne__(self, other):
     return not (self == other)
 
@@ -2388,6 +2409,9 @@ class LazyMap(object):
 
   def __eq__(self, other):
     return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
+
+  def __hash__(self):
+    return hash((self.__class__, tuple(self.__dict__.items())))
 
   def __ne__(self, other):
     return not (self == other)
@@ -2661,6 +2685,9 @@ class ResourceAttributes(object):
 
   def __eq__(self, other):
     return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
+
+  def __hash__(self):
+    return hash((self.__class__, tuple(self.__dict__.items())))
 
   def __ne__(self, other):
     return not (self == other)
@@ -2937,6 +2964,9 @@ class Resource(object):
 
   def __eq__(self, other):
     return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
+
+  def __hash__(self):
+    return hash((self.__class__, tuple(self.__dict__.items())))
 
   def __ne__(self, other):
     return not (self == other)
@@ -3405,6 +3435,9 @@ class NoteAttributes(object):
   def __eq__(self, other):
     return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
 
+  def __hash__(self):
+    return hash((self.__class__, tuple(self.__dict__.items())))
+
   def __ne__(self, other):
     return not (self == other)
 
@@ -3787,6 +3820,9 @@ class Note(object):
   def __eq__(self, other):
     return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
 
+  def __hash__(self):
+    return hash((self.__class__, tuple(self.__dict__.items())))
+
   def __ne__(self, other):
     return not (self == other)
 
@@ -3923,6 +3959,9 @@ class Publishing(object):
   def __eq__(self, other):
     return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
 
+  def __hash__(self):
+    return hash((self.__class__, tuple(self.__dict__.items())))
+
   def __ne__(self, other):
     return not (self == other)
 
@@ -4035,6 +4074,9 @@ class BusinessNotebook(object):
   def __eq__(self, other):
     return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
 
+  def __hash__(self):
+    return hash((self.__class__, tuple(self.__dict__.items())))
+
   def __ne__(self, other):
     return not (self == other)
 
@@ -4134,6 +4176,9 @@ class SavedSearchScope(object):
 
   def __eq__(self, other):
     return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
+
+  def __hash__(self):
+    return hash((self.__class__, tuple(self.__dict__.items())))
 
   def __ne__(self, other):
     return not (self == other)
@@ -4310,6 +4355,9 @@ class SavedSearch(object):
   def __eq__(self, other):
     return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
 
+  def __hash__(self):
+    return hash((self.__class__, tuple(self.__dict__.items())))
+
   def __ne__(self, other):
     return not (self == other)
 
@@ -4408,6 +4456,9 @@ class SharedNotebookRecipientSettings(object):
 
   def __eq__(self, other):
     return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
+
+  def __hash__(self):
+    return hash((self.__class__, tuple(self.__dict__.items())))
 
   def __ne__(self, other):
     return not (self == other)
@@ -4674,6 +4725,9 @@ class SharedNotebook(object):
 
   def __eq__(self, other):
     return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
+
+  def __hash__(self):
+    return hash((self.__class__, tuple(self.__dict__.items())))
 
   def __ne__(self, other):
     return not (self == other)
@@ -5065,6 +5119,9 @@ class NotebookRestrictions(object):
   def __eq__(self, other):
     return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
 
+  def __hash__(self):
+    return hash((self.__class__, tuple(self.__dict__.items())))
+
   def __ne__(self, other):
     return not (self == other)
 
@@ -5422,6 +5479,9 @@ class Notebook(object):
   def __eq__(self, other):
     return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
 
+  def __hash__(self):
+    return hash((self.__class__, tuple(self.__dict__.items())))
+
   def __ne__(self, other):
     return not (self == other)
 
@@ -5674,6 +5734,9 @@ class LinkedNotebook(object):
   def __eq__(self, other):
     return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
 
+  def __hash__(self):
+    return hash((self.__class__, tuple(self.__dict__.items())))
+
   def __ne__(self, other):
     return not (self == other)
 
@@ -5809,6 +5872,9 @@ class NotebookDescriptor(object):
 
   def __eq__(self, other):
     return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
+
+  def __hash__(self):
+    return hash((self.__class__, tuple(self.__dict__.items())))
 
   def __ne__(self, other):
     return not (self == other)
