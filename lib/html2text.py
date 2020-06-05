@@ -115,7 +115,7 @@ def tag_str(tag, attrs, start):
     if start:
         attr_str = ""
         for k in attrs:
-            attr_str += (' %s="%s"' % (k, attrs[k]))
+            attr_str += (' %s="%s"' % (k, attrs[k].replace('"',"'")))
         return "<%s%s%s>" % (tag, attr_str, '/' if start == 2 else '')
     else:
         return "</%s>" % tag
@@ -444,23 +444,50 @@ class HTML2Text(HTMLParser.HTMLParser):
                 self.inheader = False
                 return # prevent redundant emphasis marks on headers
 
+        if attrs and "-evernote-webclip" in attrs.get("style", "") and start:
+            if start:
+                self.out('\n\n'+tag_str(tag, attrs, start)+'\n ')
+            else:
+                self.out('\n'+tag_str(tag, attrs, start)+'\n\n')
+            self.verbatim = [tag, 1]
+            return
+
         if tag == 'div':
             if self.google_doc:
                 if start and google_has_height(tag_style):
                     self.p()
                 else:
-                    self.soft_br()
+                    self.br()
             else:
                 if start == 1:
-                    if attrs and attrs.get("title") != "footnotes":
+                    if attrs and '-en-paragraph:true' in attrs.get("style"):
+                        self.block_stack.append(False)
+                        self.p()
+                    elif attrs and '-en-codeblock:true' in attrs.get("style"):
+                        self.o("```")
+                        self.block_stack.append("encodeblock")
+                        self.pre = "encodeblock"
+                        self.startpre = 1
+                    elif self.pre:
+                        self.block_stack.append(False)
+                    elif attrs and attrs.get("title") != "footnotes":
                         self.block_stack.append(True)
                         self.o(tag_str(tag+' markdown="1"', attrs, start))
+                        self.p()
                     else:
                         self.block_stack.append(False)
+                        self.p()
                 elif start == 0:
-                    if self.block_stack.pop():
+                    t = self.block_stack.pop()
+                    if t == "encodeblock":
+                        self.pre = 0
+                        self.o("```")
+                    elif t == True:
                         self.o('</%s>' % tag)
-                self.p()
+                    elif self.pre:
+                        self.pbr()
+                    else:
+                        self.p()
 
         if tag == 'p':
             if self.google_doc:
@@ -738,7 +765,9 @@ class HTML2Text(HTMLParser.HTMLParser):
             bq = (">" * self.blockquote)
             if not (force and data and data[0] == ">") and self.blockquote: bq += " "
 
-            if self.pre == "indent":
+            if self.verbatim:
+                data = data.replace("\n", "\n ")
+            elif self.pre == "indent":
                 if not self.list:
                     bq += "    "
                 #else: list content is already partially indented

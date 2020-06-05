@@ -338,6 +338,7 @@ class EvernoteDo():
                 css[tag] = css[tag].strip()
                 if len(css[tag]) > 0 and not css[tag].endswith(";"):
                     css[tag] = css[tag] + ";"
+            css['pre'] = css.get('pre', "") + "-en-codeblock:true;"
             EvernoteDo.MD_EXTRAS['inline-css'] = css
         self.md_syntax = self.settings.get("md_syntax")
         if not self.md_syntax:
