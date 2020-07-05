@@ -23,7 +23,7 @@ If you like this plugin and would like to support its development please conside
  * **Send a note to Evernote:** converts the markdown document in the current view into rich text and sends it to your Evernote. You will be able to choose a title, tags and the notebook where to store it.
  * **Open a note from Evernote**: shows panels to choose a note from a notebook or by searching, converts the note to markdown and presents it in a view.
  * **Update note**: when editing the markdown of an opened note you can save it back to Evernote (again in rich text). You can also delete a note directly from ST.
- * **Full two-way metadata support**: you can set and change the note's title, notebook and tag just by providing a YAML metadata header in your markdown source.
+ * **Full two-way metadata support**: you can set and change the note's title, notebook, tags and readonly attribute just by providing a YAML metadata header in your markdown source.
  * **Attachments**: can insert, list, delete and open attachments.
  * **Clip to note**: saves the current selection as code snippets to a new note.
 
@@ -69,9 +69,9 @@ If you need to reconfigure the plugin go to `Preferences > Package Settings > Ev
 
 
 > **PLEASE NOTE**
-> 
+>
 > The authentication method makes use of the Developer Token which is unique to your account and grants read-write access to your Evernote.
-> This token will be saved in your user settings in the `Evernote.sublime-settings` file so make sure you do not share this publicly! 
+> This token will be saved in your user settings in the `Evernote.sublime-settings` file so make sure you do not share this publicly!
 
 
 # Issues
@@ -107,7 +107,7 @@ you can also overwrite the standard "save" bindings for Evernote notes as follow
 { "keys": ["ctrl+s"], "command": "send_to_evernote", "context": [{"key": "evernote_note"}, {"key": "evernote_has_guid", "operator": "equal", "operand": false}] },
 ```
 
-you would still be able to save the note as a file by using the `File > Save` menu. 
+you would still be able to save the note as a file by using the `File > Save` menu.
 
 You can also restrict your bindings to views showing Evernote notes by adding
 
@@ -220,7 +220,8 @@ A markdown source can start with a metadata block like the following:
 ---
 title: My Note's Title
 tags: misc, sublime
-notebook: My Notebook 
+notebook: My Notebook
+readonly: True/False
 ---
 ```
 
@@ -230,7 +231,7 @@ The `tags` field can be an unquoted list or a json list such as `["my long tag",
 
 If the `evernote_autocomplete` is true, the list of notebooks and tags will be offered as autocompletion in the metadata block.
 
-**PLEASE NOTE**: the format for the metadata is currently rather restricted and it is just a small subset of YAML. The only recognised keys are `title`, `tags` and `notebook`, the others will be ignored and can be discarded (for example if you edit the note from other clients). 
+**PLEASE NOTE**: the format for the metadata is currently rather restricted and it is just a small subset of YAML. The only recognised keys are `title`, `tags`, `notebook` and `readonly`, the others will be ignored and can be discarded (for example if you edit the note from other clients).
 
 # Equations
 
@@ -266,6 +267,7 @@ Setting                   | Purpose
 `tab_prefix`              | a string used as a prefix in tabs for notes (default `"Evernote: "`)
 `wiki_tables`             | enable Wiki table syntax (default `false`)
 `debug`                   | enables logging in the console
+`readonly_content_class`  | custom the `note.attributes.contentClass` to make the note be readonly, the default value is `evernote.sublime.readonly`
 
 
 # Acknowledgements
@@ -301,7 +303,7 @@ The plugin has been made possible by the contribution of several people:
 
 If you think your name should be here, let us know!
 
-Also thanks to our first donor, Matthew Baltrusitis! 
+Also thanks to our first donor, Matthew Baltrusitis!
 
 Libraries (some adapted to work with Evernote formats):
 

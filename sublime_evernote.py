@@ -90,13 +90,14 @@ METADATA_HEADER = """\
 title: %s
 tags: %s
 notebook: %s
+readonly: %s
 ---
 
 """
 
 
-def metadata_header(title="", tags=[], notebook="", **kw):
-    return METADATA_HEADER % (title, json.dumps(tags, ensure_ascii=False), notebook)
+def metadata_header(title="", tags=[], notebook="", readonly=False, **kw):
+    return METADATA_HEADER % (title, json.dumps(tags, ensure_ascii=False), notebook, readonly)
 
 def set_view_metadata(view, note, reset_modified=True):
     view.settings().set("$evernote", True)
@@ -528,6 +529,12 @@ class EvernoteDo():
         LOG(tags)
         note.tagNames = tags
         note.content = content
+        attributes = Types.NoteAttributes()
+        if meta.get("readonly") == 'True':
+            attributes.contentClass = self.settings.get('readonly_content_class') or 'evernote.sublimetext.readonly'
+        else:
+            attributes.contentClass = None
+        note.attributes = attributes
         if "notebook" in meta:
             notebooks = self.get_notebooks()
             for nb in notebooks:
@@ -887,7 +894,7 @@ class OpenEvernoteNoteCommand(EvernoteDoWindow):
                 # tags = [noteStore.getTag(self.token(), guid).name for guid in (note.tagGuids or [])]
                 # tags = [self.tag_from_guid(guid) for guid in (note.tagGuids or [])]
                 tags = noteStore.getNoteTagNames(self.token(), note.guid)
-                meta = metadata_header(note.title, tags, nb_name)
+                meta = metadata_header(note.title, tags, nb_name, note.attributes.contentClass is not None)
                 body_start = note.content.find('<en-note')
                 if body_start < 0:
                     body_start = 0
@@ -904,7 +911,8 @@ class OpenEvernoteNoteCommand(EvernoteDoWindow):
                             if parts["metadata"].get("title") == note.title and \
                                "tags" in parts["metadata"] and \
                                set(parts["metadata"].get("tags")) == set(tags) and \
-                               parts["metadata"].get("notebook") == nb_name:
+                               parts["metadata"].get("notebook") == nb_name and \
+                               parts["metadata"].get("readonly") is not None:
                                 meta = ""
                             else:
                                 LOG("Overridding metadata")
@@ -1492,6 +1500,7 @@ META_SNIPPET = """\
 title: $3
 notebook: $1
 tags:$2
+readonly: False
 ---
 
 $0

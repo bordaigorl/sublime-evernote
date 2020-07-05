@@ -32,5 +32,6 @@
     "show_stacks": true,
     "open_single_result": true,
     "tab_prefix": "Evernote: ",
-    "warn_on_close": true
+    "warn_on_close": true,
+    "readonly_content_class": "evernote.sublime.readonly"
 }
