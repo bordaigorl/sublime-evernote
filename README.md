@@ -1,13 +1,10 @@
 Evernote for Sublime Text
 =========================
 
-[![pc badge]][pc]
 [![release badge]][release]
 [![licence badge]][licence]
 [![stars badge]][repo]
 [![issues badge]][issues]
-[![paypal badge]][paypal]
-[![chat badge]][gitter]
 
 [Sublime Text](http://www.sublimetext.com/) plugin for [Evernote](http://www.evernote.com).
 
@@ -15,8 +12,6 @@ This package is based on [SublimeEvernote](https://github.com/jamiesun/SublimeEv
 
 To start using it install it from Package Control and type "Evernote" on the Command Palette (<kbd>ctrl+shift+p</kbd>).
 See [First Use](https://github.com/bordaigorl/sublime-evernote#first-use) for linking the plugin to your account.
-
-If you like this plugin and would like to support its development please consider donating through a [paypal donation][paypal] or using [gratipay].
 
 # Main Features
 
@@ -293,15 +288,11 @@ Setting                   | Purpose
 
 # Acknowledgements
 
-The current maintainer is [bordaigorl].
-
-If you like this plugin and would like to support its development please consider donating through a [paypal donation](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JFWLSUZYXUHAQ) or using [gratipay].
-
 If you would like to contribute, please see [CONTRIBUTING].
 
 The plugin has been made possible by the contribution of several people:
 
- * Current maintainer and new features: [bordaigorl]
+ * Previous maintainer and author of many features: [bordaigorl]
  * Original ST2 Plugin:
    [jamiesun](https://github.com/jamiesun/SublimeEvernote)
  * Port to ST3:
@@ -338,21 +329,12 @@ Libraries (some adapted to work with Evernote formats):
 [wiki-md]: <https://github.com/bordaigorl/sublime-evernote/wiki/Supported-Markdown>
 [wiki-meta]: <https://github.com/bordaigorl/sublime-evernote/wiki/Metadata>
 [bordaigorl]: <https://github.com/bordaigorl>
-[gratipay]: <https://gratipay.com/bordaigorl/>
-[paypal]: <https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JFWLSUZYXUHAQ>
-[gitter]: <https://gitter.im/bordaigorl/sublime-evernote>
-[release]: <https://github.com/bordaigorl/sublime-evernote/releases>
-[licence]: <https://raw.githubusercontent.com/bordaigorl/sublime-evernote/master/LICENSE>
-[issues]: <https://github.com/bordaigorl/sublime-evernote/issues>
-[repo]: <https://github.com/bordaigorl/sublime-evernote/>
-[pc]: <https://packagecontrol.io/packages/Evernote>
+[release]: <https://github.com/chinakr/sublime-evernote/releases>
+[licence]: <https://raw.githubusercontent.com/chinakr/sublime-evernote/master/LICENSE>
+[issues]: <https://github.com/chinakr/sublime-evernote/issues>
+[repo]: <https://github.com/chinakr/sublime-evernote/>
 
-[pc badge]: https://packagecontrol.herokuapp.com/downloads/Evernote.svg
-[release badge]: https://img.shields.io/github/release/bordaigorl/sublime-evernote.svg
+[release badge]: https://img.shields.io/github/release/chinakr/sublime-evernote.svg
 [licence badge]: http://img.shields.io/badge/license-MIT-blue.svg?style=flat
-[stars badge]: https://img.shields.io/github/stars/bordaigorl/sublime-evernote.svg
-[issues badge]: https://img.shields.io/github/issues/bordaigorl/sublime-evernote.svg
-[tips badge]: https://img.shields.io/gratipay/bordaigorl.svg
-[chat badge]: https://img.shields.io/badge/gitter-join%20chat-green.svg
-[paypal badge]: https://img.shields.io/badge/paypal-donate-blue.svg
-
+[stars badge]: https://img.shields.io/github/stars/chinakr/sublime-evernote.svg
+[issues badge]: https://img.shields.io/github/issues/chinakr/sublime-evernote.svg
